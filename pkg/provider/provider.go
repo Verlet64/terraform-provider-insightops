@@ -17,11 +17,15 @@ func Provider() *schema.Provider {
 				Type:     schema.TypeString,
 				Required: true,
 			},
+			"endpoint": {
+				Type:     schema.TypeString,
+				Required: true,
+			},
 		},
 		ConfigureFunc: configureInsightopsProvider,
 	}
 }
 
 func configureInsightopsProvider(d *schema.ResourceData) (interface{}, error) {
-	return insightops.NewClient(d.Get("api_key").(string)), nil
+	return insightops.NewClient(d.Get("api_key").(string), d.Get("endpoint").(string)), nil
 }

@@ -11,11 +11,13 @@ type insightopsclientiface interface {
 
 type Client struct {
 	APIKey string
+	URI    string
 }
 
-func NewClient(key string) insightopsclientiface {
+func NewClient(key string, endpoint string) insightopsclientiface {
 	return &Client{
 		APIKey: key,
+		URI:    endpoint,
 	}
 }
 
@@ -38,7 +40,7 @@ func (c *Client) DeleteSavedQuery(id string) error {
 }
 
 func (c *Client) CreateSavedQuery(name string, query string) (*savedqueries.SavedQueryResponse, error) {
-	res, err := savedqueries.CreateSavedQuery(c.APIKey, name, query)
+	res, err := savedqueries.CreateSavedQuery(c.URI, c.APIKey, name, query)
 	if err != nil {
 		return nil, err
 	}

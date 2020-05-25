@@ -3,17 +3,16 @@ package savedqueries
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 )
-
-const uri string = "https://eu.rest.logs.insight.rapid7.com/query/saved_queries"
 
 // CreateSavedQuery creates a saved query in InsightOps
 //
 // It doesn't handle any form of parsing/validation of
 // the query itself, so the query may be invalid.
-func CreateSavedQuery(apikey string, name string, query string) (*SavedQueryResponse, error) {
+func CreateSavedQuery(uri string, apikey string, name string, query string) (*SavedQueryResponse, error) {
 	type During struct {
 		To        interface{} `json:"to"`
 		From      interface{} `json:"from"`
@@ -54,8 +53,15 @@ func CreateSavedQuery(apikey string, name string, query string) (*SavedQueryResp
 	if err != nil {
 		return nil, err
 	}
-
 	defer res.Body.Close()
+
+	if res.StatusCode == http.StatusForbidden {
+		return nil, fmt.Errorf("You are not authorised to perform this action. [Status %v]", res.StatusCode)
+	}
+
+	if res.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("Unable to create a saved query at this time. [Status %v]", res.StatusCode)
+	}
 
 	var response SavedQueryResponse
 
