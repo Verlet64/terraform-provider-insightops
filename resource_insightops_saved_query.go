@@ -80,6 +80,9 @@ func resourceInsightOpsSavedQuery() *schema.Resource {
 		Read:   resourceInsightOpsSavedQueryRead,
 		Update: resourceInsightOpsSavedQueryUpdate,
 		Delete: resourceInsightOpsSavedQueryDelete,
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 
 		Schema: map[string]*schema.Schema{
 			"name": {
