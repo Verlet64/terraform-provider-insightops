@@ -1,14 +1,16 @@
-package main
+package provider
 
 import (
-	"example.com/terraform-provider-insightops/insightops"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+
+	"example.com/terraform-provider-insightops/pkg/insightops"
+	"example.com/terraform-provider-insightops/pkg/resources"
 )
 
 func Provider() *schema.Provider {
 	return &schema.Provider{
 		ResourcesMap: map[string]*schema.Resource{
-			"insightops_saved_query": resourceInsightOpsSavedQuery(),
+			"insightops_saved_query": resources.ResourceInsightOpsSavedQuery(),
 		},
 		Schema: map[string]*schema.Schema{
 			"api_key": {
