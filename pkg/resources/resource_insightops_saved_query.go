@@ -1,7 +1,7 @@
-package main
+package resources
 
 import (
-	"example.com/terraform-provider-insightops/insightops"
+	"example.com/terraform-provider-insightops/pkg/insightops"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 )
 
@@ -74,7 +74,7 @@ func resourceInsightOpsSavedQueryDelete(d *schema.ResourceData, m interface{}) e
 	return nil
 }
 
-func resourceInsightOpsSavedQuery() *schema.Resource {
+func ResourceInsightOpsSavedQuery() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceInsightOpsSavedQueryCreate,
 		Read:   resourceInsightOpsSavedQueryRead,

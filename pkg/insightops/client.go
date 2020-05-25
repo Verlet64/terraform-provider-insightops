@@ -1,6 +1,6 @@
 package insightops
 
-import "example.com/terraform-provider-insightops/insightops/savedqueries"
+import "example.com/terraform-provider-insightops/pkg/insightops/savedqueries"
 
 type insightopsclientiface interface {
 	FetchSavedQuery(id string) (*savedqueries.SavedQueryResponse, error)
@@ -19,7 +19,7 @@ func NewClient(key string) insightopsclientiface {
 	}
 }
 
-func (c *Client) FetchSavedQuery (id string) (*savedqueries.SavedQueryResponse, error) {
+func (c *Client) FetchSavedQuery(id string) (*savedqueries.SavedQueryResponse, error) {
 	res, err := savedqueries.FetchSavedQuery(c.APIKey, id)
 	if err != nil {
 		return nil, err
@@ -28,8 +28,7 @@ func (c *Client) FetchSavedQuery (id string) (*savedqueries.SavedQueryResponse, 
 	return res, nil
 }
 
-
-func (c *Client) DeleteSavedQuery (id string) error {
+func (c *Client) DeleteSavedQuery(id string) error {
 	err := savedqueries.DeleteSavedQuery(c.APIKey, id)
 	if err != nil {
 		return err
@@ -38,8 +37,7 @@ func (c *Client) DeleteSavedQuery (id string) error {
 	return nil
 }
 
-
-func (c *Client) CreateSavedQuery (name string, query string) (*savedqueries.SavedQueryResponse, error) {
+func (c *Client) CreateSavedQuery(name string, query string) (*savedqueries.SavedQueryResponse, error) {
 	res, err := savedqueries.CreateSavedQuery(c.APIKey, name, query)
 	if err != nil {
 		return nil, err
@@ -48,7 +46,7 @@ func (c *Client) CreateSavedQuery (name string, query string) (*savedqueries.Sav
 	return res, nil
 }
 
-func (c *Client) UpdateSavedQuery (id string, name string, query string) (*savedqueries.SavedQueryResponse, error) {
+func (c *Client) UpdateSavedQuery(id string, name string, query string) (*savedqueries.SavedQueryResponse, error) {
 	res, err := savedqueries.UpdateSavedQuery(c.APIKey, id, name, query)
 	if err != nil {
 		return nil, err
