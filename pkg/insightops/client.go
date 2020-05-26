@@ -31,7 +31,7 @@ func (c *Client) FetchSavedQuery(id string) (*savedqueries.SavedQueryResponse, e
 }
 
 func (c *Client) DeleteSavedQuery(id string) error {
-	err := savedqueries.DeleteSavedQuery(c.APIKey, id)
+	err := savedqueries.DeleteSavedQuery(c.URI, c.APIKey, id)
 	if err != nil {
 		return err
 	}
