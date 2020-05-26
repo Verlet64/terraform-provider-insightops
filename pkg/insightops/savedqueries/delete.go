@@ -1,14 +1,15 @@
 package savedqueries
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 	"time"
 )
 
 // DetchSavedQuery
-func DeleteSavedQuery(apikey string, id string) error {
-	queryURI := strings.Join([]string{SavedQueriesBaseURI, id}, "/")
+func DeleteSavedQuery(endpoint string, apikey string, id string) error {
+	queryURI := strings.Join([]string{endpoint, id}, "/")
 
 	req, err := http.NewRequest("DELETE", queryURI, nil)
 	if err != nil {
@@ -20,10 +21,22 @@ func DeleteSavedQuery(apikey string, id string) error {
 
 	client := &http.Client{Timeout: time.Second * 10}
 
-	_, err = client.Do(req)
+	res, err := client.Do(req)
 	if err != nil {
 		return err
 	}
 
-	return nil
+	switch res.StatusCode {
+	case http.StatusOK:
+		fallthrough
+	case http.StatusNotFound:
+		return nil
+	case http.StatusUnsupportedMediaType:
+		return fmt.Errorf("Unable to modify the query at this time. Please raise an issue. [Status %v]", http.StatusUnsupportedMediaType)
+	case http.StatusForbidden:
+		return fmt.Errorf("You are not authorised to perform this action. [Status %v]", res.StatusCode)
+	default:
+		return fmt.Errorf("Unable to modify the query at this time. [Status %v]", res.StatusCode)
+	}
+
 }
