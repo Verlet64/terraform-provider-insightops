@@ -22,7 +22,7 @@ func NewClient(key string, endpoint string) insightopsclientiface {
 }
 
 func (c *Client) FetchSavedQuery(id string) (*savedqueries.SavedQueryResponse, error) {
-	res, err := savedqueries.FetchSavedQuery(c.APIKey, id)
+	res, err := savedqueries.FetchSavedQuery(c.URI, c.APIKey, id)
 	if err != nil {
 		return nil, err
 	}
