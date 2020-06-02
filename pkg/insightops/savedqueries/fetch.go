@@ -3,14 +3,15 @@ package savedqueries
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"strings"
 	"time"
 )
 
 // FetchSavedQuery fetches a saved query from InsightOps
-func FetchSavedQuery(apikey string, id string) (*SavedQueryResponse, error) {
-	queryURI := strings.Join([]string{SavedQueriesBaseURI, id}, "/")
+func FetchSavedQuery(uri string, apikey string, id string) (*SavedQueryResponse, error) {
+	queryURI := strings.Join([]string{uri, id}, "/")
 
 	req, err := http.NewRequest("GET", queryURI, nil)
 	if err != nil {
@@ -27,8 +28,16 @@ func FetchSavedQuery(apikey string, id string) (*SavedQueryResponse, error) {
 		return nil, err
 	}
 
-	if res.StatusCode == http.StatusNotFound {
-		return nil, errors.New("not found")
+	switch res.StatusCode {
+	case http.StatusNotFound:
+		return nil, fmt.Errorf("Unable to locate saved query. [Status %v]", res.StatusCode)
+	case http.StatusForbidden:
+		return nil, fmt.Errorf("Unable to locate saved query. [Status %v]", res.StatusCode)
+	case http.StatusMethodNotAllowed:
+		fallthrough
+	case http.StatusUnsupportedMediaType:
+		return nil, fmt.Errorf("Unable to fetch the saved query at this time. Please raise an issue. [Status %v]", res.StatusCode)
+	default:
 	}
 
 	defer res.Body.Close()
@@ -37,7 +46,7 @@ func FetchSavedQuery(apikey string, id string) (*SavedQueryResponse, error) {
 
 	err = json.NewDecoder(res.Body).Decode(&response)
 	if err != nil {
-		return nil, err
+		return nil, errors.New("Unable to fetch the saved query at this time. Please raise an issue")
 	}
 
 	return &response, nil
