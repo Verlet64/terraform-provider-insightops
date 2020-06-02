@@ -49,7 +49,7 @@ func (c *Client) CreateSavedQuery(name string, query string) (*savedqueries.Save
 }
 
 func (c *Client) UpdateSavedQuery(id string, name string, query string) (*savedqueries.SavedQueryResponse, error) {
-	res, err := savedqueries.UpdateSavedQuery(c.APIKey, id, name, query)
+	res, err := savedqueries.UpdateSavedQuery(c.URI, c.APIKey, id, name, query)
 	if err != nil {
 		return nil, err
 	}

@@ -3,13 +3,15 @@ package savedqueries
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strings"
 	"time"
 )
 
-// UpdateSavedQuery creates a saved query in InsightOps
-func UpdateSavedQuery(apikey string, id string, name string, query string) (*SavedQueryResponse, error) {
+// UpdateSavedQuery updates a query in Insightops.
+// Currently it can only update the name and query of a saved query.
+func UpdateSavedQuery(uri string, apikey string, id string, name string, query string) (*SavedQueryResponse, error) {
 	type During struct {
 		To        interface{} `json:"to"`
 		From      interface{} `json:"from"`
@@ -31,7 +33,7 @@ func UpdateSavedQuery(apikey string, id string, name string, query string) (*Sav
 		SavedQuery SavedQuery `json:"saved_query"`
 	}
 
-	queryURI := strings.Join([]string{SavedQueriesBaseURI, id}, "/")
+	queryURI := strings.Join([]string{uri, id}, "/")
 
 	body := SavedQueryRequest{SavedQuery: SavedQuery{Name: name, Leql: Leql{Statement: query}}}
 
@@ -51,6 +53,23 @@ func UpdateSavedQuery(apikey string, id string, name string, query string) (*Sav
 	res, err := client.Do(req)
 	if err != nil {
 		return nil, err
+	}
+
+	if res.StatusCode >= 400 {
+		switch res.StatusCode {
+		case http.StatusForbidden:
+			return nil, fmt.Errorf("You are not authorised to perform this action. [Status %v]", http.StatusForbidden)
+		case http.StatusNotFound:
+			return nil, fmt.Errorf("Unable to locate saved query. [Status %v]", http.StatusNotFound)
+		case http.StatusInternalServerError:
+			return nil, fmt.Errorf("Unable to modify the query at this time. [Status %d]", http.StatusInternalServerError)
+		case http.StatusMethodNotAllowed:
+			fallthrough
+		case http.StatusUnsupportedMediaType:
+			fallthrough
+		default:
+			return nil, fmt.Errorf("Unable to modify the query at this time. Please raise an issue. [Status %d]", res.StatusCode)
+		}
 	}
 
 	defer res.Body.Close()
