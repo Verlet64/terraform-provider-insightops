@@ -1,6 +1,6 @@
 package insightops
 
-import "example.com/terraform-provider-insightops/pkg/insightops/savedqueries"
+import "github.com/Verlet64/terraform-provider-insightops/pkg/insightops/savedqueries"
 
 type insightopsclientiface interface {
 	FetchSavedQuery(id string) (*savedqueries.SavedQueryResponse, error)

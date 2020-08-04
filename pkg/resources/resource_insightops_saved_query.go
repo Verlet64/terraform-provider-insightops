@@ -1,7 +1,7 @@
 package resources
 
 import (
-	"example.com/terraform-provider-insightops/pkg/insightops"
+	"github.com/Verlet64/terraform-provider-insightops/pkg/insightops"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 )
 
