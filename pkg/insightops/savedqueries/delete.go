@@ -7,7 +7,8 @@ import (
 	"time"
 )
 
-// DetchSavedQuery
+// DeleteSavedQuery given an endpoint, api key and id for a saved query deletes
+// the query in Rapid7
 func DeleteSavedQuery(endpoint string, apikey string, id string) error {
 	queryURI := strings.Join([]string{endpoint, id}, "/")
 
