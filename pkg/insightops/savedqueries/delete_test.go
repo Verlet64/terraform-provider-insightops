@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"example.com/terraform-provider-insightops/pkg/insightops/savedqueries"
+	"github.com/Verlet64/terraform-provider-insightops/pkg/insightops/savedqueries"
 )
 
 func getMockDeleteKeys() map[string]string {

@@ -1,4 +1,4 @@
-module example.com/terraform-provider-insightops
+module github.com/Verlet64/terraform-provider-insightops
 
 go 1.13
 

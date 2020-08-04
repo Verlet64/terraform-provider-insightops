@@ -3,8 +3,8 @@ package provider
 import (
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 
-	"example.com/terraform-provider-insightops/pkg/insightops"
-	"example.com/terraform-provider-insightops/pkg/resources"
+	"github.com/Verlet64/terraform-provider-insightops/pkg/insightops"
+	"github.com/Verlet64/terraform-provider-insightops/pkg/resources"
 )
 
 func Provider() *schema.Provider {

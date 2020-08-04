@@ -4,7 +4,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/plugin"
 	"github.com/hashicorp/terraform-plugin-sdk/terraform"
 
-	"example.com/terraform-provider-insightops/pkg/provider"
+	"github.com/Verlet64/terraform-provider-insightops/pkg/provider"
 )
 
 func main() {
